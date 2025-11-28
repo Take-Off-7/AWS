@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Exit on errors
+set -e
+
+# Check for bucket name
+if [ -z "$1" ]; then
+  echo "Error: Please provide bucket name"
+  exit 1
+fi
+
+# Check for filename
+if [ -z "$2" ]; then
+  echo "Error: Please provide path to the file to upload"
+  exit 1
+fi
+
+BUCKET_NAME="$1"
+FILE_PATH="$2"
+
+# Object key in S3 (just the file name)
+OBJECT_KEY=$(basename "$FILE_PATH")
+
+# Upload to S3
+aws s3api put-object \
+  --bucket "$BUCKET_NAME" \
+  --key "$OBJECT_KEY" \
+  --body "$FILE_PATH"
+
+echo "Uploaded $FILE_PATH to s3://$BUCKET_NAME/$OBJECT_KEY"

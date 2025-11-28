@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+echo "== sync"
+
+set -e
+
+# Check for bucket name
+if [ -z "$1" ]; then
+  echo "Error: There needs to be a bucket name eg. ./sync my-bucket-name"
+  exit 1
+fi
+
+# Check for filename prefix
+if [ -z "$2" ]; then
+  echo "Error: There needs to be a filename prefix eg. ./sync my-bucket-name my-filename-prefix"
+  exit 1
+fi
+
+BUCKET_NAME=$1
+FILENAME_PREFIX=$2
+
+# Remove trailing slash if any
+FILENAME_PREFIX="${FILENAME_PREFIX%/}"
+
+# Where we'll store these files
+OUTPUT_DIR="/tmp/random_files"
+
+# Remove the folder if it already exists
+rm -rf "$OUTPUT_DIR"
+
+# Create output folder
+mkdir -p "$OUTPUT_DIR"
+
+# Generate a random number of files between 5 and 10
+NUM_FILES=$((RANDOM % 6 + 5))   # 5 to 10 files
+
+echo "Creating $NUM_FILES random files in $OUTPUT_DIR..."
+
+# Loop to create the files with sequential names
+for i in $(seq 1 $NUM_FILES); do
+  FILE_PATH="$OUTPUT_DIR/${FILENAME_PREFIX}_$i.txt"
+  
+  # Create file with random content (10-100 bytes)
+  head -c $((RANDOM % 91 + 10)) /dev/urandom > "$FILE_PATH"
+  
+  echo "Created $FILE_PATH"
+done
+
+echo "Done!"
+
+# Show directory tree
+tree "$OUTPUT_DIR"
+
+# Sync to S3
+echo "Syncing files to s3://$BUCKET_NAME/files ..."
+aws s3 sync "$OUTPUT_DIR" "s3://$BUCKET_NAME/files"
