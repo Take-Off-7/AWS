@@ -1,0 +1,35 @@
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# Terraform directories
+.terraform/
+.terraform.lock.hcl
+
+# Terraform crash logs
+crash.log
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# AWS credentials / secrets
+aws-credentials
+*.pem
+
+# Binaries / provider files
+*.jar
+terraform-provider-aws_*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup/mirror folder
+AWS-mirror-backup2.git/
