@@ -3,6 +3,8 @@
 *_credentials
 *.jar
 
+AWS-mirror-backup2.git/
+
 *.tfstate
 *.tfstate.backup
 .terraform/
