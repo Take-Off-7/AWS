@@ -9,3 +9,4 @@ AWS-mirror-backup2.git/
 *.tfstate.backup
 .terraform/
 cdk.out/
+bin/
